@@ -296,9 +296,16 @@ function getIntermediatePoints(points: Coordinates[]): Promise<TrackPoint[]> {
         })
     );
 
-    return getElevation(route).then((elevations) => {
+    return getElevation(route)
+    .then((elevations) => {
         route.forEach((point, i) => {
             point.ele = elevations[i];
+        });
+        return route;
+    })
+    .catch(() => {
+        route.forEach((point) => {
+            point.ele = 0;
         });
         return route;
     });
